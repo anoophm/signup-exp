@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <title>Sign Up for Sunbird</title>
+</head>
 <style>
     body {
         font-family: Arial, Helvetica, sans-serif;
     }
+
     * {
         box-sizing: border-box;
     }
 
-    /* Full-width input fields */
     input[type=text],
     input[type=password] {
         width: 100%;
@@ -19,14 +23,12 @@
         background: #f1f1f1;
     }
 
-    /* Add a background color when the inputs get focus */
     input[type=text]:focus,
     input[type=password]:focus {
         background-color: #ddd;
         outline: none;
     }
 
-    /* Set a style for all buttons */
     button {
         background-color: #4CAF50;
         color: white;
@@ -42,92 +44,126 @@
         opacity: 1;
     }
 
-    /* Float cancel and signup buttons and add an equal width */
-    .signupbtn {
+    .signUpButton {
         float: center;
         width: 50%;
     }
 
-    /* Add padding to container elements */
     .container {
         padding: 26px;
     }
 
-    /* The Modal (background) */
     .modal {
         display: block;
-        /* Hidden by default */
         position: fixed;
-        /* Stay in place */
         z-index: 1;
-        /* Sit on top */
         left: 0;
         top: 0;
         width: 100%;
-        /* Full width */
         height: 100%;
         background-color: #474e5d;
         padding-top: 0px;
     }
 
-    /* Modal Content/Box */
-    .modal-content {
+    .registerForm {
         background-color: #fefefe;
         margin: 5% auto 15% auto;
-        /* 5% from the top, 15% from the bottom and centered */
         border: 1px solid #888;
         width: 50%;
-        /* Could be more or less, depending on screen size */
     }
 
-    /* Clear floats */
-    .clearfix::after {
+    .submitSection::after {
         content: "";
         clear: both;
         display: table;
     }
-    
+
     .align-center {
         text-align: center;
     }
-
 </style>
 
 <body>
-
-    <div id="id01" class="modal">
-        <form class="modal-content" action="/signUp">
+    <div class="modal">
+        <form id="registerForm" onchange="validate(event)" onsubmit="return generateOtp(event)" class="registerForm">
             <div class="container">
                 <br>
                 <div class="align-center">
-                    <img class="align-center" height="56" alt="Sunbird" src="https://www.sunbird.org/images/logo/logo.svg">
+                    <img class="align-center" height="56" alt="Sunbird"
+                        src="https://www.sunbird.org/images/logo/logo.svg">
                 </div>
                 <h2 class="align-center">Register on Sunbird</h2>
-                <label for="email"><b>Name</b></label>
-                <input type="text" placeholder="Enter Name" name="name" required>
+                <label for="name"><b>Name</b></label>
+                <input name="name" id="name" type="text" placeholder="Enter Name" required>
 
                 <label for="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" required>
+                <input name="email" id="email" type="text" placeholder="Enter Email"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
 
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <label for="password"><b>Password</b></label>
+                <input name="password" id="password" type="password" placeholder="Enter Password" required min="8"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
 
-                <label for="psw-repeat"><b>Confirm Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+                <label for="confirmPassword"><b>Confirm Password</b></label>
+                <input name="confirmPassword" id="confirmPassword" type="password" placeholder="Confirm Password"
+                    required min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
 
                 <label>
-                    <input type="checkbox" checked="checked" name="tnc" style="margin-bottom:15px"> 
-                    <span>I understand and accept the <a href="#" style="color:dodgerblue">Sunbird Terms of Use</a></span>
+                    <input id="tnc" name="tnc" type="checkbox" value="accepted" style="margin-bottom:15px" required>
+                    <span>I understand and accept the <a href="#" style="color:dodgerblue">Sunbird Terms of
+                            Use</a></span>
                 </label>
-                <div class="clearfix">
-                    <button class="align-center" type="submit" class="signupbtn align-center">Register</button>
+                <div class="submitSection">
+                    <button id="submitForm" class="align-center" type="submit"
+                        class="signUpButton align-center">Register</button>
                 </div>
             </div>
         </form>
     </div>
 
     <script>
-        // no script
+        const initPage = function () {
+            let formValue = {};
+            const generateOtp = function (event) {
+                event.preventDefault(); // prevent from submitting
+                console.log('Register called');
+                let formFields = [...document.getElementById("registerForm").elements]
+                formFields.filter(ele => ele.localName === 'input').forEach(element => {
+                    formValue[element.name] = element.value;
+                    console.log(`${element.name}: ${element.value}`);
+                });
+                console.log("Form values", formValue);
+            }
+            const formErrors = {
+                name: "Name is Required",
+                email: "Please enter valid Email",
+                password: "Your password must contain a minimum of 8 characters. It must include numerals, lower and upper case alphabets and special characters, without any spaces",
+                confirmPassword: "Passwords do not match",
+                tnc: "Must confirm to Terms of use"
+            }
+            const formIds = ["name", "email", "password", "confirmPassword", "tnc"].forEach(id => {
+                let input = document.getElementById(id);
+                input.setCustomValidity(formErrors[id]);
+            })
+            const validate = function (event) {
+                console.log(`validating field ${event.srcElement.name}, valid: ${event.srcElement.validity.valid}, 
+                    validityMassage: ${event.srcElement.validationMessage}`);
+                let input = document.getElementById(event.srcElement.name);
+                let validityState_object = event.srcElement.validity;
+                if (!validityState_object.valid && !validityState_object.customError) {
+                    event.srcElement.setCustomValidity(formErrors[event.srcElement.name]);
+                } else {
+                    let passwordElement = document.getElementById('password');
+                    if(event.srcElement.name === "confirmPassword" && event.srcElement.value !== passwordElement.value) {
+                        event.srcElement.setCustomValidity(formErrors[event.srcElement.name]);
+                    } else {
+                        event.srcElement.setCustomValidity('');
+                    }
+                }
+            }
+            return { generateOtp, formErrors, validate };
+        }
+        const { generateOtp, formErrors, validate } = initPage();
     </script>
 
 </body>
