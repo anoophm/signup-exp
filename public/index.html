@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Full-width input fields */
+    input[type=text],
+    input[type=password] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border: none;
+        background: #f1f1f1;
+    }
+
+    /* Add a background color when the inputs get focus */
+    input[type=text]:focus,
+    input[type=password]:focus {
+        background-color: #ddd;
+        outline: none;
+    }
+
+    /* Set a style for all buttons */
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
+    }
+
+    button:hover {
+        opacity: 1;
+    }
+
+    /* Float cancel and signup buttons and add an equal width */
+    .signupbtn {
+        float: center;
+        width: 50%;
+    }
+
+    /* Add padding to container elements */
+    .container {
+        padding: 26px;
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: block;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        background-color: #474e5d;
+        padding-top: 0px;
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto 15% auto;
+        /* 5% from the top, 15% from the bottom and centered */
+        border: 1px solid #888;
+        width: 50%;
+        /* Could be more or less, depending on screen size */
+    }
+
+    /* Clear floats */
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    
+    .align-center {
+        text-align: center;
+    }
+
+</style>
+
+<body>
+
+    <div id="id01" class="modal">
+        <form class="modal-content" action="/signUp">
+            <div class="container">
+                <br>
+                <div class="align-center">
+                    <img class="align-center" height="56" alt="Sunbird" src="https://www.sunbird.org/images/logo/logo.svg">
+                </div>
+                <h2 class="align-center">Register on Sunbird</h2>
+                <label for="email"><b>Name</b></label>
+                <input type="text" placeholder="Enter Name" name="name" required>
+
+                <label for="email"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+
+                <label for="psw-repeat"><b>Confirm Password</b></label>
+                <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+
+                <label>
+                    <input type="checkbox" checked="checked" name="tnc" style="margin-bottom:15px"> 
+                    <span>I understand and accept the <a href="#" style="color:dodgerblue">Sunbird Terms of Use</a></span>
+                </label>
+                <div class="clearfix">
+                    <button class="align-center" type="submit" class="signupbtn align-center">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // no script
+    </script>
+
+</body>
+
+</html>

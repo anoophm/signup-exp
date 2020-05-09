@@ -1,0 +1,23 @@
+{
+  "name": "signup-exp",
+  "version": "1.0.0",
+  "description": "simple signup page without any 3rd party library",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anoophm/signup-exp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anoophm/signup-exp/issues"
+  },
+  "homepage": "https://github.com/anoophm/signup-exp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
