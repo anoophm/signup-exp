@@ -85,7 +85,7 @@
 
 <body>
     <div class="modal">
-        <form id="registerForm" onchange="validate(event)" onsubmit="return generateOtp(event)" class="registerForm">
+        <form id="registerForm" onchange="validate(event)" onsubmit="generateOtp(event)" class="registerForm">
             <div class="container">
                 <br>
                 <div class="align-center">
@@ -120,10 +120,47 @@
             </div>
         </form>
     </div>
+    <script>
+        var ajax = {};
+        ajax.send = function (url, callback, method, data) {
+            var x = new XMLHttpRequest();
+            x.open(method, url);
+            x.onreadystatechange = function () {
+                if (x.readyState == 4 && this.status === 200) {
+                    callback(x.responseText)
+                }
+                if(x.readyState == 4){
+                    console.log("data", this.status);
+                }
+            };
+            if (method == 'POST') {
+                x.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            }
+            x.send(data)
+        };
 
+        ajax.get = function (url, query, callback) {
+            var query = [];
+            for (var key in data) {
+                query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+            }
+            ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null)
+        };
+
+        ajax.post = function (url, data, callback) {
+            ajax.send(url, callback, 'POST', JSON.stringify(data))
+        };
+    
+    </script>
     <script>
         const initPage = function () {
             let formValue = {};
+            ajax.get('/v1/tenant/info', {}, function(data) {
+                console.log("got data", data);
+            });
+            ajax.post('/api/org/v1/search', {"request" : {"filters":{"slug":"sunbird","isRootOrg":true}}}, function(data) {
+                console.log("got data", data);
+            });
             const generateOtp = function (event) {
                 event.preventDefault(); // prevent from submitting
                 console.log('Register called');
@@ -154,7 +191,7 @@
                     event.srcElement.setCustomValidity(formErrors[event.srcElement.name]);
                 } else {
                     let passwordElement = document.getElementById('password');
-                    if(event.srcElement.name === "confirmPassword" && event.srcElement.value !== passwordElement.value) {
+                    if (event.srcElement.name === "confirmPassword" && event.srcElement.value !== passwordElement.value) {
                         event.srcElement.setCustomValidity(formErrors[event.srcElement.name]);
                     } else {
                         event.srcElement.setCustomValidity('');
